@@ -56,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,    _______,  _______,  _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,                                  _______,  _______,  _______,  _______,
         _______,            _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,              _______,            _______,  _______,  _______,
-        _______,  _______,  _______,                               A(KC_SPC),                               _______,  _______,  _______,    _______,    _______,  _______,  _______,  _______,            _______,  _______),
+        _______,  _______,  _______,                                _______,                               _______,  _______,  _______,    _______,    _______,  _______,  _______,  _______,            _______,  _______),
     [WIN_FN] = LAYOUT_ansi_109(
         _______,  KC_BRID,  KC_BRIU,  KC_TASK,  KC_FLXP,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,    RGB_TOG,    _______,  _______,  RGB_TOG,  QK_BOOT,  EE_CLR,   QK_MAKE,   QK_RBT,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,    _______,  _______,  _______,  _______,  _______,  _______,  _______,
@@ -137,25 +137,29 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     return false;
 }
 
-#define ko_make_win_disable(trigger_key) \
+#define ko_make_win_kc_override(trigger_key, replacement_key) \
     ((const key_override_t){                                                                \
         .trigger_mods                           = MOD_MASK_GUI,                             \
-        .layers                                 = ~(1 << WIN_SHIFT),                        \
+        .layers                                 = ~(1 << WIN_SHIFT),                         \
         .suppressed_mods                        = 0,                                        \
         .options                                = ko_options_default,                       \
         .negative_mod_mask                      = MOD_MASK_CSA,                             \
         .custom_action                          = NULL,                                     \
         .context                                = NULL,                                     \
         .trigger                                = (trigger_key),                            \
-        .replacement                            = KC_RSFT,                                  \
+        .replacement                            = (replacement_key),                        \
         .enabled                                = NULL                                      \
     })
 
-const key_override_t win_c_override = ko_make_win_disable(KC_C);
-const key_override_t win_f_override = ko_make_win_disable(KC_F);
-const key_override_t win_w_override = ko_make_win_disable(KC_W);
+#define ko_make_win_disable(trigger_key) ko_make_win_kc_override(trigger_key, KC_RSFT)
+
+const key_override_t win_spc_override = ko_make_win_kc_override(KC_SPACE, A(KC_SPACE));
+const key_override_t win_c_override   = ko_make_win_disable(KC_C);
+const key_override_t win_f_override   = ko_make_win_disable(KC_F);
+const key_override_t win_w_override   = ko_make_win_disable(KC_W);
 
 const key_override_t **key_overrides = (const key_override_t *[]){
+    &win_spc_override,
     &win_c_override,
     &win_f_override,
     &win_w_override,
