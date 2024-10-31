@@ -158,10 +158,9 @@ const key_override_t win_c_override   = ko_make_win_disable(KC_C);
 const key_override_t win_f_override   = ko_make_win_disable(KC_F);
 const key_override_t win_w_override   = ko_make_win_disable(KC_W);
 
-const key_override_t **key_overrides = (const key_override_t *[]){
+const key_override_t *key_overrides[] = {
     &win_spc_override,
     &win_c_override,
     &win_f_override,
-    &win_w_override,
-    NULL  
+    &win_w_override
 };
