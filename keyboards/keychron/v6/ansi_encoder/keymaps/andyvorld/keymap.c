@@ -15,6 +15,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include "rgb_translation.h"
 #include "keychron_common.h"
 
 enum layers{
